@@ -146,21 +146,26 @@ switch:
     name: "Arm Away"
     component_name: bArmAway
     update_interval: 100ms
+    internal: true
   - platform: nextion
     id: arm_home
     name: "Arm Home"
     component_name: bArmHome
     update_interval: 100ms
+    internal: true
   - platform: nextion
     id: arm_night
     name: "Arm Night"
     component_name: bArmNight
-    update_interval: 100ms    
-  # - platform: nextion
-  #   id: ok_button
-  #   name: "OK button"
-  #   component_name: bOk
-  #   update_interval: 100ms
+    update_interval: 100ms
+    internal: true
+    
+  - platform: nextion
+    id: disarm
+    name: "Disarm"
+    component_name: bDisarm
+    update_interval: 100ms
+    internal: true
     
   # Basically a global variable to keep track on whether the Nextion display is ready or not. Delays initial info from HA to the display.
   - platform: template
@@ -237,6 +242,7 @@ sensor:
   - platform: wifi_signal
     name: $device_name WiFi Signal Sensor
     update_interval: 60s
+  
 
 text_sensor:
   - platform: nextion
@@ -254,6 +260,13 @@ text_sensor:
   - platform: version
     name: $device_name ESPHome Version
 
+  # ALARMO Current State
+  - platform: homeassistant
+    id: alarmo_state
+    name: "Alarmo State From Home Assistant"
+    entity_id: alarm_control_panel.alarmo
+
+
 # Configure the screen itself
 display:
   - platform: nextion
@@ -263,11 +276,12 @@ display:
     # A little fun...
     on_setup:
       then:
-        - lambda: id(disp1).send_command_printf("page 0");
+        - lambda: id(disp1).send_command_printf("page Waiting");
         - wait_until:
             api.connected
         - switch.template.publish:
             id: nextion_init
             state: on
         # - lambda: id(disp1).send_command_printf("dim=0");
+        - lambda: id(disp1).send_command_printf("page Screensaver");
         - rtttl.play: "startup:d=16,o=5,b=180:c,e,g,c6,8p,c,16p,e,c"
