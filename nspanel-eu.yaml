@@ -265,6 +265,50 @@ text_sensor:
     id: alarmo_state
     name: "Alarmo State From Home Assistant"
     entity_id: alarm_control_panel.alarmo
+    filters:
+      - to_upper:
+    on_value:
+      then:
+        - script.execute: evaluate_alarm_state
+
+
+script:
+  - id: evaluate_alarm_state
+    then:
+      - lambda: |-
+          // Update Status
+          ESP_LOGD("main", "Alarmo state is %s", id(alarmo_state).state);
+          id(disp1).set_component_text_printf("Disarmed.tStatus", "%s", id(alarmo_state).state);
+          id(disp1).set_component_text_printf("Armed.tStatus", "%s", id(alarmo_state).state);
+
+          if ( id(alarmo_state).state == "ARMING") {
+            id(disp1).send_command_printf("page Arming");
+            id(disp1).set_component_text("Screensaver.vState", "Armed");
+          }
+          else if ( id(alarmo_state).state == "PENDING") {
+            id(disp1).send_command_printf("page Pending");
+            id(disp1).set_component_text("Screensaver.vState", "Armed");
+          }
+          else if ( id(alarmo_state).state == "TRIGGERED") {
+            id(disp1).send_command_printf("page Triggered");
+            id(disp1).set_component_text("Screensaver.vState", "Armed");
+          }
+          else if ( id(alarmo_state).state == "ARMED_HOME") {
+            id(disp1).send_command_printf("page Armed");
+            id(disp1).set_component_text("Screensaver.vState", "Armed");
+          }
+          else if ( id(alarmo_state).state == "ARMED_NIGHT") {
+            id(disp1).send_command_printf("page Armed");
+            id(disp1).set_component_text("Screensaver.vState", "Armed");
+          }
+          else if ( id(alarmo_state).state == "ARMED_AWAY") {
+            id(disp1).send_command_printf("page Armed");
+            id(disp1).set_component_text("Screensaver.vState", "Armed");
+          }
+          else if ( id(alarmo_state).state == "DISARMED") {
+            id(disp1).send_command_printf("page Disarmed");
+            id(disp1).set_component_text("Screensaver.vState", "Disarmed");
+          }
 
 
 # Configure the screen itself
