@@ -155,26 +155,28 @@ switch:
     name: "Arm Away"
     component_name: bArmAway
     update_interval: 100ms
-    internal: true
+    internal: false
+
   - platform: nextion
     id: arm_home
     name: "Arm Home"
     component_name: bArmHome
     update_interval: 100ms
-    internal: true
+    internal: false
+
   - platform: nextion
     id: arm_night
     name: "Arm Night"
     component_name: bArmNight
     update_interval: 100ms
-    internal: true
+    internal: false
     
   - platform: nextion
     id: disarm
     name: "Disarm"
     component_name: bDisarm
     update_interval: 100ms
-    internal: true
+    internal: false
     
   # Basically a global variable to keep track on whether the Nextion display is ready or not. Delays initial info from HA to the display.
   # Moved to binary sensor
@@ -265,8 +267,8 @@ sensor:
 text_sensor:
   - platform: nextion
     name: $device_name code
-    component_name: varCode
-    update_interval: 200ms
+    component_name: vCode
+    update_interval: 100ms
 
   # Uptime in a human readable form. Updated from the uptime sensor
   - platform: template
@@ -301,37 +303,37 @@ script:
 
           ESP_LOGD("main", "Alarmo state is %s", state.c_str());
           
-          id(disp1).set_component_text_printf("Disarmed.tStatus", "%s", state.c_str());
+          // id(disp1).set_component_text_printf("Disarmed.tStatus", "%s", state.c_str());
           id(disp1).set_component_text_printf("Armed.tStatus", "%s", state.c_str());
 
           // When using state in condition don't use c_str()
           if ( state == "ARMING") {
             id(disp1).send_command_printf("page Arming");
-            id(disp1).send_command_printf("Screensaver.vState.txt=Armed");
+            id(disp1).send_command_printf("Screensaver.vState.txt=\"Armed\"");
           }
           else if ( state == "PENDING") {
             id(disp1).send_command_printf("page Pending");
-            id(disp1).send_command_printf("Screensaver.vState.txt=Armed");
+            id(disp1).send_command_printf("Screensaver.vState.txt=\"Armed\"");
           }
           else if ( state == "TRIGGERED") {
             id(disp1).send_command_printf("page Triggered");
-            id(disp1).send_command_printf("Screensaver.vState.txt=Armed");
+            id(disp1).send_command_printf("Screensaver.vState.txt=\"Armed\"");
           }
           else if ( state == "ARMED_HOME") {
             id(disp1).send_command_printf("page Armed");
-            id(disp1).send_command_printf("Screensaver.vState.txt=Armed");
+            id(disp1).send_command_printf("Screensaver.vState.txt=\"Armed\"");
           }
           else if ( state == "ARMED_NIGHT") {
             id(disp1).send_command_printf("page Armed");
-            id(disp1).send_command_printf("Screensaver.vState.txt=Armed");
+            id(disp1).send_command_printf("Screensaver.vState.txt=\"Armed\"");
           }
           else if ( state == "ARMED_AWAY") {
             id(disp1).send_command_printf("page Armed");
-            id(disp1).send_command_printf("Screensaver.vState.txt=Armed");
+            id(disp1).send_command_printf("Screensaver.vState.txt=\"Armed\"");
           }
           else if ( state == "DISARMED") {
             id(disp1).send_command_printf("page Disarmed");
-            id(disp1).send_command_printf("Screensaver.vState.txt=Disarmed");
+            id(disp1).send_command_printf("Screensaver.vState.txt=\"Disarmed\"");
           }
 
 
@@ -341,7 +343,6 @@ display:
     id: disp1
     uart_id: tf_uart
     tft_url: "https://hass.dev1.przhome.xyz/local/alarm-panel-eu.tft"
-    # A little fun...
     on_setup:
       then:
         - lambda: id(disp1).send_command_printf("dim=0");

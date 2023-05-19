@@ -1,0 +1,16 @@
+id: 'alarmo_arm_away_id'
+alias: Alarm arm_away
+description: ''
+trigger:
+- platform: state
+  entity_id:
+  - switch.arm_away
+  to: 'on'
+condition: []
+action:
+- service: alarmo.arm
+  data:
+    force: true
+    entity_id: alarm_control_panel.alarmo
+    mode: away
+mode: single

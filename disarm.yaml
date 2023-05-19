@@ -1,0 +1,15 @@
+id: 'alarmo_disarm_id'
+alias: Alarm disarm
+description: ''
+trigger:
+- platform: state
+  entity_id:
+  - switch.disarm
+  to: 'on'
+condition: []
+action:
+- service: alarmo.disarm
+  data:
+    entity_id: alarm_control_panel.alarmo
+    code: '{{ states(''sensor.nsalarmpanel_code'') }}'
+mode: single

@@ -1,0 +1,16 @@
+id: 'alarmo_arm_night_id'
+alias: Alarm arm_night
+description: ''
+trigger:
+- platform: state
+  entity_id:
+  - switch.arm_night
+  to: 'on'
+condition: []
+action:
+- service: alarmo.arm
+  data:
+    force: true
+    entity_id: alarm_control_panel.alarmo
+    mode: night
+mode: single

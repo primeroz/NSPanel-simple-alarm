@@ -1,0 +1,16 @@
+id: 'alarmo_arm_home_id'
+alias: Alarm arm_home
+description: ''
+trigger:
+- platform: state
+  entity_id:
+  - switch.arm_home
+  to: 'on'
+condition: []
+action:
+- service: alarmo.arm
+  data:
+    force: true
+    entity_id: alarm_control_panel.alarmo
+    mode: home
+mode: single
