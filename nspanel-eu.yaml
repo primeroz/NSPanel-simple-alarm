@@ -300,36 +300,38 @@ script:
           std::string state = id(alarmo_state).state;
 
           ESP_LOGD("main", "Alarmo state is %s", state.c_str());
+          
           id(disp1).set_component_text_printf("Disarmed.tStatus", "%s", state.c_str());
           id(disp1).set_component_text_printf("Armed.tStatus", "%s", state.c_str());
 
-          if ( state.c_str() == "ARMING") {
+          // When using state in condition don't use c_str()
+          if ( state == "ARMING") {
             id(disp1).send_command_printf("page Arming");
-            id(disp1).set_component_text("Screensaver.vState", "Armed");
+            id(disp1).send_command_printf("Screensaver.vState.txt=Armed");
           }
-          else if ( state.c_str() == "PENDING") {
+          else if ( state == "PENDING") {
             id(disp1).send_command_printf("page Pending");
-            id(disp1).set_component_text("Screensaver.vState", "Armed");
+            id(disp1).send_command_printf("Screensaver.vState.txt=Armed");
           }
-          else if ( state.c_str() == "TRIGGERED") {
+          else if ( state == "TRIGGERED") {
             id(disp1).send_command_printf("page Triggered");
-            id(disp1).set_component_text("Screensaver.vState", "Armed");
+            id(disp1).send_command_printf("Screensaver.vState.txt=Armed");
           }
-          else if ( state.c_str() == "ARMED_HOME") {
+          else if ( state == "ARMED_HOME") {
             id(disp1).send_command_printf("page Armed");
-            id(disp1).set_component_text("Screensaver.vState", "Armed");
+            id(disp1).send_command_printf("Screensaver.vState.txt=Armed");
           }
-          else if ( state.c_str() == "ARMED_NIGHT") {
+          else if ( state == "ARMED_NIGHT") {
             id(disp1).send_command_printf("page Armed");
-            id(disp1).set_component_text("Screensaver.vState", "Armed");
+            id(disp1).send_command_printf("Screensaver.vState.txt=Armed");
           }
-          else if ( state.c_str() == "ARMED_AWAY") {
+          else if ( state == "ARMED_AWAY") {
             id(disp1).send_command_printf("page Armed");
-            id(disp1).set_component_text("Screensaver.vState", "Armed");
+            id(disp1).send_command_printf("Screensaver.vState.txt=Armed");
           }
-          else if ( state.c_str() == "DISARMED") {
+          else if ( state == "DISARMED") {
             id(disp1).send_command_printf("page Disarmed");
-            id(disp1).set_component_text("Screensaver.vState", "Disarmed");
+            id(disp1).send_command_printf("Screensaver.vState.txt=Disarmed");
           }
 
 

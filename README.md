@@ -20,3 +20,4 @@ HA automation to make it all working with Alarmo (well, actually any alarm entit
 * https://github.com/darktim/ESPHome-NSPanel
 * https://github.com/masto/NSPanel-Demo-Files/wiki/HowTo
 * https://github.com/cablesandcoffee/NSPanel
+* https://github.com/3ative/NSPanel-Building-the-HMI
